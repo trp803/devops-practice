@@ -1,0 +1,44 @@
+---
+- name: Setup Web Server
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Обновить apt кэш
+      apt:
+        update_cache: yes
+
+    - name: Установить необходимые пакеты
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - htop
+        state: present
+
+    - name: Создать рабочую директорию
+      file:
+        path: /opt/webapp
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Создать index.html
+      copy:
+        content: |
+          <html>
+          <head><meta charset="UTF-8"></head>
+          <body>
+            <h1>🚀 Задеплоено через Ansible!</h1>
+            <p>Этот файл создан автоматически</p>
+          </body>
+          </html>
+        dest: /opt/webapp/index.html
+        owner: ubuntu
+        mode: '0644'
+
+    - name: Показать результат
+      debug:
+        msg: "✅ Сервер настроен успешно!"
