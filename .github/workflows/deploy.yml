@@ -6,23 +6,25 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: |
-          docker build -t my-webapp ./docker/webapp
-
-      - name: Run tests
-        run: |
-          echo "Running tests..."
-          docker run --rm my-webapp echo "Tests passed!"
-
-      - name: Deploy
-        run: |
-          echo "Deploying application..."
-          echo "Deploy successful! ✅"
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ~/devops-practice
+            git pull origin main
+            cd docker/webapp
+            docker stop my-webapp || true
+            docker rm my-webapp || true
+            docker build -t my-webapp .
+            docker run -d -p 80:80 --name my-webapp my-webapp
+            echo "✅ Deploy successful!"
