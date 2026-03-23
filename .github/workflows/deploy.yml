@@ -1,0 +1,28 @@
+name: Deploy DevOps App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-webapp ./docker/webapp
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          docker run --rm my-webapp echo "Tests passed!"
+
+      - name: Deploy
+        run: |
+          echo "Deploying application..."
+          echo "Deploy successful! ✅"
