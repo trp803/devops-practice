@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DevOps App</title>
+</head>
+<body>
+  <h1>🚀 Задеплоено через Ansible Role!</h1>
+  <p>Сервер: {{ ansible_hostname }}</p>
+  <p>IP: {{ ansible_default_ipv4.address }}</p>
+  <p>Дата деплоя: {{ ansible_date_time.date }}</p>
+</body>
+</html>
