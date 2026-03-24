@@ -1,3 +1,7 @@
+# Docker Compose для WordPress + MySQL
+# Изменён: 2026-03-24 — пароли вынесены в .env файл (были в открытом виде)
+# Требует наличия файла .env (скопируй из .env.example)
+
 version: '3.8'
 
 services:
@@ -6,10 +10,11 @@ services:
     container_name: wordpress-db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+      # Значения берутся из .env файла, не хранятся в коде
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
 
@@ -20,10 +25,11 @@ services:
     ports:
       - "8080:80"
     environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
+      # Значения берутся из .env файла, не хранятся в коде
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     depends_on:
       - db
 
