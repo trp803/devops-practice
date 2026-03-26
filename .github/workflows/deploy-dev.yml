@@ -27,17 +27,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd ~/devops-practice/final-project
+            cd ~/devops-practice
             git pull origin dev
-            docker stop final-app-dev || true
-            docker rm final-app-dev || true
-            docker build -t final-app-dev .
-            docker run -d \
-              -p 8889:80 \
-              --name final-app-dev \
-              --restart always \
-              final-app-dev
-            echo "✅ DEV Deploy successful!"
+            bash bash/deploy.sh final-app-dev 8889 final-app-dev ~/devops-practice/final-project
 
       - name: Notify success
         if: success()
@@ -54,14 +46,3 @@ jobs:
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
             -d text="❌ DEV деплой упал!
           Проверь Actions: https://github.com/${{ github.repository }}/actions"
-```
-
----
-
-### Шаг 3 — Открой порт 8889 в Oracle Cloud
-
-Так же как открывал другие порты:
-```
-Protocol: TCP
-Port: 8889
-Source: 0.0.0.0/0
