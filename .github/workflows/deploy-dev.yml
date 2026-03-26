@@ -17,8 +17,7 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="🔧 DEV деплой начался...
-          Автор: ${{ github.actor }}"
+            -d text="🔧 DEV деплой начался... Автор: ${{ github.actor }}"
 
       - name: Deploy to DEV
         uses: appleboy/ssh-action@master
@@ -36,13 +35,11 @@ jobs:
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="✅ DEV деплой успешен!
-          DEV сайт: http://${{ secrets.SERVER_HOST }}:8889"
+            -d text="✅ DEV деплой успешен! Сайт: http://${{ secrets.SERVER_HOST }}:8889"
 
       - name: Notify failure
         if: failure()
         run: |
           curl -s -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage \
             -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
-            -d text="❌ DEV деплой упал!
-          Проверь Actions: https://github.com/${{ github.repository }}/actions"
+            -d text="❌ DEV деплой упал! Проверь: https://github.com/${{ github.repository }}/actions"
